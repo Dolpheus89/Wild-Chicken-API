@@ -1,24 +1,23 @@
-import { db } from '../utils/db';
+import { db } from "../utils/db";
 
 export interface Chicken {
-    id:number,
-    name: string,
-    imgSrc:string,
-    position:string,
-    biography:string
+  id: number;
+  name: string;
+  imgSrc: string;
+  position: string;
+  biography: string;
 }
 
+export const getAllChickens = async (): Promise<Chicken[]> => {
+  return new Promise((resolve, reject) => {
+    let query = "SELECT * FROM chickens";
 
-export const getAllChickens = async ():Promise<Chicken[]> => {
-    return new Promise((resolve, reject) => {
-        let query = "SELECT * FROM chickens"
-
-        db.all(query,(err: Error | null, rows) => {
-            if (err) {
-                reject(err)
-            } else {
-                resolve(rows as Chicken[])
-            }
-        })
-    })
-}
+    db.all(query, (err: Error | null, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows as Chicken[]);
+      }
+    });
+  });
+};

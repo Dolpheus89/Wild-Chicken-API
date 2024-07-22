@@ -1,9 +1,8 @@
-import { Router } from "express"
-import * as ChickensControllers from "../controllers/chickensController"
+import { Router } from "express";
+import * as ChickensControllers from "../controllers/chickensController";
 
-const router = Router()
+const router = Router();
 
-router.get("/", ChickensControllers.getChickens)
+router.get("/", ChickensControllers.getChickens);
 
-
-export default router
+export default router;
