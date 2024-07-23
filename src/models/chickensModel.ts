@@ -10,28 +10,27 @@ export interface Chicken {
 
 export const getAllChickens = async (): Promise<Chicken[]> => {
   return new Promise((resolve, reject) => {
-    let query = "SELECT * FROM chickens";
+    const query = "SELECT * FROM chickens";
 
-    db.all(query, (err: Error | null, rows) => {
+    db.query(query, (err, results) => {
       if (err) {
         reject(err);
       } else {
-        resolve(rows as Chicken[]);
+        resolve(results as Chicken[]);
       }
     });
   });
 };
 
-
-export const getChickenById = async (id:number): Promise<Chicken> => {
+export const getChickenById = async (id: number): Promise<Chicken | null> => {
   return new Promise((resolve, reject) => {
-    let query = "SELECT * FROM chickens WHERE id = ?";
+    const query = "SELECT * FROM chickens WHERE id = ?";
 
-    db.get(query, [id] ,(err: Error | null, row: Chicken) => {
+    db.query(query, [id], (err, results) => {
       if (err) {
         reject(err);
       } else {
-        resolve(row as Chicken || null);
+        resolve((results as Chicken[])[0] || null);
       }
     });
   });
