@@ -5,7 +5,11 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node-dev --respawn ./src/server.ts",
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn ./src/server.ts",
+    "start": "node dist/server.js",
+    "pm2:start": "pm2 start dist/server.js --name wild-chicken-school-api",
+    "pm2:stop": "npx pm2 stop wild-chicken-school-api",
     "format": "prettier --write \"./src/**/*.{js,jsx,css,ts}\""
   },
   "author": "",
