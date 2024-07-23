@@ -3,3 +3,6 @@
 GET http://localhost:3310/chickens
 // Get ALL chickens
 ###
+
+GET http://localhost:3310/chickens/1
+// Get chicken by id with params
