@@ -6,6 +6,10 @@ export interface Chicken {
   imgSrc: string;
   position: string;
   biography: string;
+  campus: string;
+  birthdate: string;
+  email: string;
+  grades: Array<{ subject: string; grade: number }>;
 }
 
 export const getAllChickens = async (): Promise<Chicken[]> => {
