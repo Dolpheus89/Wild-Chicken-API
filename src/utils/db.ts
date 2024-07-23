@@ -16,13 +16,28 @@ export const db = mysql.createConnection({
   database: DB_NAME,
 });
 
-db.connect((err) => {
-  if (err) {
-    console.error("Erreur de connexion à la base de données:", err);
-    return;
-  }
-  console.log("Connexion à la base de données MySQL réussie.");
-});
+const connectToDatabase = () => {
+  db.connect((err) => {
+    if (err) {
+      console.error("Erreur de connexion à la base de données:", err);
+      setTimeout(connectToDatabase, 2000); // Retry connection after 2 seconds
+      return;
+    }
+    console.log("Connexion à la base de données MySQL réussie.");
+  });
+
+  db.on("error", (err) => {
+    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+      console.error("Connexion à la base de données perdue. Reconnexion...");
+      connectToDatabase();
+    } else {
+      console.error("Erreur de la base de données:", err);
+      throw err;
+    }
+  });
+};
+
+connectToDatabase();
 
 export const initDB = async () => {
   try {
@@ -59,5 +74,28 @@ process.on("exit", () => {
     } else {
       console.log("Connexion fermée.");
     }
+  });
+});
+
+// Handle SIGINT and SIGTERM for graceful shutdown
+process.on("SIGINT", () => {
+  db.end((err) => {
+    if (err) {
+      console.error("Erreur lors de la fermeture de la connexion:", err);
+    } else {
+      console.log("Connexion fermée.");
+    }
+    process.exit();
+  });
+});
+
+process.on("SIGTERM", () => {
+  db.end((err) => {
+    if (err) {
+      console.error("Erreur lors de la fermeture de la connexion:", err);
+    } else {
+      console.log("Connexion fermée.");
+    }
+    process.exit();
   });
 });
